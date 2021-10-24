@@ -22,4 +22,4 @@ struct SwiftcodeMe: Website {
 }
 
 // This will generate your website using the built-in Foundation theme:
-try SwiftcodeMe().publish(withTheme: .foundation)
+try SwiftcodeMe().publish(withTheme: .marshall)
