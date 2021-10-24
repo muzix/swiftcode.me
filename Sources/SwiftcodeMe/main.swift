@@ -1,6 +1,7 @@
 import Foundation
 import Publish
 import Plot
+import SplashPublishPlugin
 
 // This type acts as the configuration for your website.
 struct Blog: Website {
@@ -17,7 +18,7 @@ struct Blog: Website {
 
     // Update these properties to configure your website:
     var url = URL(string: "https://swiftcode.me")!
-    var title = "<Put a random quotes here>"
+    var title = "📱 ☕️ 🍜"
     var name = "Hoang Pham"
     var description = "iOS Developer"
     var language: Language { .english }
@@ -34,4 +35,7 @@ struct Blog: Website {
 }
 
 // This will generate your website using the built-in Foundation theme:
-try Blog().publish(withTheme: .blog)
+try Blog().publish(
+    withTheme: .blog,
+    plugins: [.splash(withClassPrefix: "")]
+)
