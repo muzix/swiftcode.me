@@ -1,7 +1,7 @@
 ---
 date: 2021-10-31 01:08
 title: Library Evolution Support
-description: Library Evolution Support.
+description: Explain Library Evolution Support
 tags: library, evolution, swift, abi, stability, xcframework
 excerpt: This article is my explanation about Library Evolution Support and why does it matter.
 ---

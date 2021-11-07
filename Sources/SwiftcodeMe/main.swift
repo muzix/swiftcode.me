@@ -19,6 +19,7 @@ struct Blog: Website {
     // Update these properties to configure your website:
     var url = URL(string: "https://swiftcode.me")!
     var title = "📱 ☕️ 🍜"
+    var seoTitle = "swiftcode.me"
     var name = "Hoang Pham"
     var description = "iOS Developer"
     var language: Language { .english }

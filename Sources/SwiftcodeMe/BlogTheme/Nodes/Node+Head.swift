@@ -6,11 +6,25 @@
 //
 
 import Plot
+import Publish
 
 extension Node where Context == HTML.DocumentContext {
-    static func head(for site: Blog) -> Node {
+    static func head(for site: Blog, item: Item<Blog>? = nil) -> Node {
+        let metaDesc: Node<HTML.HeadContext>
+        let seoTitle: String
+        if let post = item {
+            metaDesc = .meta(
+                .name("description"),
+                .content(post.metadata.excerpt)
+            )
+            seoTitle = post.title
+        } else {
+            metaDesc = .empty
+            seoTitle = site.seoTitle
+        }
         return Node.head(
-            .title("\(site.name) - \(site.description)"),
+            .title(seoTitle),
+            metaDesc,
             .meta(
                 .charset(.utf8),
                 .name("viewport"),
