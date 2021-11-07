@@ -32,6 +32,13 @@ extension Node where Context == HTML.DocumentContext {
             ),
             .link(
                 .rel(.stylesheet),
+                .href("https://unpkg.com/applause-button/dist/applause-button.css")
+            ),
+            .script(
+                .src("https://unpkg.com/applause-button/dist/applause-button.js")
+            ),
+            .link(
+                .rel(.stylesheet),
                 .href("/Pure/styles-v2.css")
             ),
             .link(
