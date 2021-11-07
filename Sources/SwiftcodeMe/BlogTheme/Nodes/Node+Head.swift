@@ -28,7 +28,11 @@ extension Node where Context == HTML.DocumentContext {
             ),
             .link(
                 .rel(.stylesheet),
-                .href("/Pure/styles.css")
+                .href("https://unpkg.com/github-markdown-css@5.0.0/github-markdown-light.css")
+            ),
+            .link(
+                .rel(.stylesheet),
+                .href("/Pure/styles-v2.css")
             ),
             .link(
                 .rel(.stylesheet),

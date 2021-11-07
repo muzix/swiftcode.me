@@ -25,7 +25,7 @@ extension Node where Context == HTML.BodyContext {
             ),
             .tagList(for: item, on: site),
             .div(
-                .class("post-description"),
+                .class("markdown-body"),
                 .div(
                     .contentBody(item.body)
                 )

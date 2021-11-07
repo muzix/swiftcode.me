@@ -17,7 +17,7 @@ extension Node where Context == HTML.BodyContext {
                 .text(page.title)
             ),
             .div(
-                .class("post-description"),
+                .class("markdown-body"),
                 .div(
                     .contentBody(page.body)
                 )
