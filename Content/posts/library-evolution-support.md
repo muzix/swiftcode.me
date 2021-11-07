@@ -64,6 +64,22 @@ BUILD_LIBRARY_FOR_DISTRIBUTION=YES
 
 With this flag enabled, Swift compiler will generate a new header file with suffix **swiftinterface** instead of the **swiftmodule** header file. **swiftinterface** file is in text-based format & is forward-compatible with any Swift compiler version >= 5.1.
 
+```
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
+// swift-module-flags: -target arm64-apple-ios13.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name PaymentModule
+import Foundation
+import NetworkModule
+@_exported import PaymentModule
+import Swift
+@_hasMissingDesignatedInitializers final public class PaymentManager {
+  public static let shared: PaymentModule.PaymentManager
+  final public func setup(isDebugMode: Swift.Bool = false)
+  final public func tellMeAboutNetworkConfigType()
+  @objc deinit
+}
+```
+
 But that's not over, `BUILD_LIBRARY_FOR_DISTRIBUTION` also enable **Library Evolution**. Let's find out what it is. 
 
 ### Library Evolution
