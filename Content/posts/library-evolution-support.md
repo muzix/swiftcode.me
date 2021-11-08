@@ -23,7 +23,9 @@ It sounds similar to Application Programming Interface (API). But while API prov
 
 Before Swift 5.0, an app written in Swift will be bundled with Swift standard libraries (a bunch of libSwift*.dylib files). And an app can run on any past, present, and future OS releases.
 
-<img src="/assets/pre-abi-stability.jpg" alt="before ABI stability" width="500"/>
+<p align="center">
+<img src="/assets/pre-abi-stability-2.jpg" alt="before ABI stability" width="600"/>
+</p>
 
 Then Swift 5.0 released with ABI Stability
 
@@ -35,7 +37,9 @@ Then Swift 5.0 released with ABI Stability
 
 As a result, Swift runtime is now a part of the Operating System, rather than embedded into the app
 
-<img src="/assets/abi-stability.jpg" alt="ABI stability" width="500"/>
+<p align="center">
+<img src="/assets/abi-stability-2.jpg" alt="ABI stability" width="500"/>
+</p>
 
 Advantages of ABI stability:
 
@@ -94,7 +98,9 @@ In the next part, I will demonstrate this problem with a small demo.
 
 Imagine we are building and maintaining an iOS shopping app. It's a common practice to break down an app into several small modules, each module built into a separated framework.
 
-<img src="/assets/shopping-app-1.jpg" alt="shopping app modular" width="300"/>
+<p align="center">
+<img src="/assets/shopping-app-1.jpg" alt="shopping app modular" width="350"/>
+</p>
 
 In the above diagram, there is a `PaymentModule` which imports `NetworkModule` to make API call to a payment gateway. At the same time, the shopping app imports the `NetworkModule` directly to make API calls as need.
 
@@ -219,7 +225,9 @@ public struct Config {
 
 We rebuild the `NetworkModule`, and update our `Shopping App` with the new framework binary (v1.0.1)
 
-<img src="/assets/shopping-app-2.jpg" alt="shopping app with new networkmodule version" width="300"/>
+<p align="center">
+<img src="/assets/shopping-app-2.jpg" alt="shopping app with new networkmodule version" width="350"/>
+</p>
 
 Now we do a clean build and run the `Shopping App` again. Let's see what happens.
 
