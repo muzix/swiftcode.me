@@ -3,17 +3,20 @@ import Publish
 import Plot
 import SplashPublishPlugin
 
+extension TwitterCardType: Decodable {}
+
 // This type acts as the configuration for your website.
 struct Blog: Website {
     enum SectionID: String, WebsiteSectionID {
         // Add the sections that you want your website to contain here:
         case posts
-        case about
     }
 
     struct ItemMetadata: WebsiteItemMetadata {
         // Add any site-specific metadata that you want to use here.
         var excerpt: String
+        var socialImageLink: String?
+        var twitterCardType: TwitterCardType?
     }
 
     // Update these properties to configure your website:

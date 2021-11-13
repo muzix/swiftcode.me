@@ -10,21 +10,11 @@ import Publish
 
 extension Node where Context == HTML.DocumentContext {
     static func head(for site: Blog, item: Item<Blog>? = nil) -> Node {
-        let metaDesc: Node<HTML.HeadContext>
-        let seoTitle: String
-        if let post = item {
-            metaDesc = .meta(
-                .name("description"),
-                .content(post.metadata.excerpt)
-            )
-            seoTitle = post.title
-        } else {
-            metaDesc = .empty
-            seoTitle = site.seoTitle
-        }
         return Node.head(
-            .title(seoTitle),
-            metaDesc,
+            self.seoTitle(for: site, item: item),
+            self.metaDesc(for: site, item: item),
+            self.metaImage(for: site, item: item),
+            self.twitterCardType(for: site, item: item),
             .meta(
                 .charset(.utf8),
                 .name("viewport"),
@@ -60,5 +50,33 @@ extension Node where Context == HTML.DocumentContext {
                 .href("/all.css")
             )
         )
+    }
+
+    private static func metaDesc(for site: Blog, item: Item<Blog>? = nil) -> Node<HTML.HeadContext> {
+        guard let item = item else {
+            return .empty
+        }
+        return .description(item.metadata.excerpt)
+    }
+
+    private static func metaImage(for site: Blog, item: Item<Blog>? = nil) -> Node<HTML.HeadContext> {
+        guard let item = item, let image = item.metadata.socialImageLink else {
+            return .empty
+        }
+        return .socialImageLink(site.url.appendingPathComponent(image))
+    }
+
+    private static func twitterCardType(for site: Blog, item: Item<Blog>? = nil) -> Node<HTML.HeadContext> {
+        guard let item = item, let cardType = item.metadata.twitterCardType else {
+            return .empty
+        }
+        return .twitterCardType(cardType)
+    }
+
+    private static func seoTitle(for site: Blog, item: Item<Blog>? = nil) -> Node<HTML.HeadContext> {
+        guard let item = item else {
+            return .title(site.seoTitle)
+        }
+        return .title(item.title)
     }
 }
