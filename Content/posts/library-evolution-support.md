@@ -4,7 +4,7 @@ title: Library Evolution Support
 description: Explain Library Evolution Support
 tags: library, evolution, swift, abi, stability, xcframework
 excerpt: This article is my explanation about Library Evolution Support and why does it matter.
-socialImageLink: assets/shopping-app-2.jpg
+socialImageLink: assets/og-shopping-app-2.jpg
 twitterCardType: summary
 ---
 
