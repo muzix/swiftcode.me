@@ -14,14 +14,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Restore Cache Publish build
-        id: restore-cache-publish
-        uses: actions/cache/restore@v3
+      - name: Cache Publish build
+        id: cache-publish
+        uses: actions/cache@v3
         with:
-          path: ~/.build
+          path: .build
           key: publish-build-${{ hashFiles('Package.resolved') }}
 
-      - if: ${{ steps.restore-cache-publish.outputs.cache-hit == 'true' }}
+      - if: ${{ steps.cache-publish.outputs.cache-hit == 'true' }}
         name: Install Publish CLI
         run: install .build/release/publish-cli /usr/local/bin/publish
 
@@ -31,13 +31,6 @@ jobs:
           git clone https://github.com/JohnSundell/Publish.git
           cd Publish
           make
-
-      - name: Save Cache Publish build
-        id: save-cache-publish
-        uses: actions/cache/save@v3
-        with:
-          path: ~/.build
-          key: publish-build-${{ hashFiles('Package.resolved') }}
 
       - name: Generate Site
         run: publish generate
