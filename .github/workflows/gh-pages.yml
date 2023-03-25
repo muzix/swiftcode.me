@@ -3,7 +3,7 @@ name: Github Pages
 on:
   push:
     branches:
-    - master
+      - master
 
 jobs:
   gh-pages:
@@ -11,33 +11,33 @@ jobs:
     container:
       image: "swift:5.6"
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
+      - name: Checkout
+        uses: actions/checkout@v1
 
-    - name: Cache Publish build
+      - name: Cache Publish build
         id: cache-publish
         uses: actions/cache@v3
         with:
           path: ~/.build
           key: publish-build-${{ hashFiles('Package.resolved') }}
-    
-    - if: ${{ steps.cache-publish.outputs.cache-hit == 'true' }}
-      name: Install Publish CLI
-      run: install .build/release/publish-cli /usr/local/bin/publish
-        
-    - if: ${{ steps.cache-publish.outputs.cache-hit != 'true' }}
-      name: Build Publish
-      run: |
-        git clone https://github.com/JohnSundell/Publish.git
-        cd Publish
-        make
 
-    - name: Generate Site
-      run: publish generate
+      - if: ${{ steps.cache-publish.outputs.cache-hit == 'true' }}
+        name: Install Publish CLI
+        run: install .build/release/publish-cli /usr/local/bin/publish
 
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PUBLISH_BRANCH: gh-pages
-        PUBLISH_DIR: ./Output
+      - if: ${{ steps.cache-publish.outputs.cache-hit != 'true' }}
+        name: Build Publish
+        run: |
+          git clone https://github.com/JohnSundell/Publish.git
+          cd Publish
+          make
+
+      - name: Generate Site
+        run: publish generate
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: ./Output
