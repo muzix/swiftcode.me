@@ -23,7 +23,7 @@ Let first find out what is **ABI**:
 
 It sounds similar to Application Programming Interface (API). But while API provides an abstract interface at a high-level, hardware-independent, often in human-readable format, ABI provides an interface at a lower level, hardware-dependent, including implementation details about the program.
 
-Before Swift 5.0, an app written in Swift will be bundled with Swift standard libraries (a bunch of libSwift*.dylib files). And an app can run on any past, present, and future OS releases.
+Before Swift 5.0, an app written in Swift will be bundled with Swift standard libraries (a bunch of libSwift\*.dylib files). And an app can run on any past, present, and future OS releases.
 
 <p align="center">
 <img src="/assets/pre-abi-stability-2.jpg" alt="before ABI stability" width="600"/>
@@ -31,10 +31,10 @@ Before Swift 5.0, an app written in Swift will be bundled with Swift standard li
 
 Then Swift 5.0 released with ABI Stability
 
-> ABI stability means locking down the ABI to the point that future compiler versions can produce binaries conforming to the stable ABI. 
-> 
+> ABI stability means locking down the ABI to the point that future compiler versions can produce binaries conforming to the stable ABI.
+>
 > ABI stability enables binary compatibility between applications and libraries compiled with different Swift versions.
-> 
+>
 > -- [Swift ABI Stability Manifesto](https://github.com/apple/swift/blob/main/docs/ABIStabilityManifesto.md#what-is-abi-stability)
 
 As a result, Swift runtime is now a part of the Operating System, rather than embedded into the app
@@ -45,11 +45,11 @@ As a result, Swift runtime is now a part of the Operating System, rather than em
 
 Advantages of ABI stability:
 
-- App size reduced (all libSwift*.dylib files removed from app bundle). Much faster to download an app.
+- App size reduced (all libSwift\*.dylib files removed from app bundle). Much faster to download an app.
 - Because Swift runtime is an integrated part of the host OS, it can be optimized and delivered along with the host OS release. An app will automatically get those benefits from each new OS release.
 - Because all Swift runtime version > 5.0 conform to the same stable ABI, an app built with one version of Swift compiler continue to run smoothly on all future OS version.
 
-In short, it's all about how an application talks to Swift libraries at runtime through an ABI and how important it is to have ABI stability. 
+In short, it's all about how an application talks to Swift libraries at runtime through an ABI and how important it is to have ABI stability.
 
 Next, we will talk about **Module Stability**.
 
@@ -62,7 +62,6 @@ Module compiled with Swift 5.0.1 cannot be imported by the Swift 5.1 compiler
 You will see this error when importing a binary framework built with an old version of the Swift compiler.
 
 To resolve this, from Swift 5.1, you can enable **Module stability** by turning on a new flag. Then you can distribute your pre-built framework without worrying about compiler version incompatible.
-
 
 ```
 BUILD_LIBRARY_FOR_DISTRIBUTION=YES
@@ -86,7 +85,7 @@ import Swift
 }
 ```
 
-But that's not over, `BUILD_LIBRARY_FOR_DISTRIBUTION` also enable **Library Evolution**. Let's find out what it is. 
+But that's not over, `BUILD_LIBRARY_FOR_DISTRIBUTION` also enable **Library Evolution**. Let's find out what it is.
 
 ### Library Evolution
 
@@ -251,11 +250,11 @@ Wait, they are telling different things. And why debug mode is `false`! 😨
 
 This scenario is an example of `Binary incompatible`. `PaymentModule` was linked against the old version of `NetworkModule`. When linking, it relies on the old ABI of `NetworkModule`. Later on, we updated the `NetworkModule` in `Shopping App` without recompiling `PaymentModule`. So, when `PaymentModule` tried to read `isDebugMode`, it accessed the first byte, which is now the first byte of the `logLevel` integer (default to zero), representing `false` bool value.
 
-Now let's turn on `Library Evolution`. 
+Now let's turn on `Library Evolution`.
 
 - First, I edited all build scripts to enable `BUILD_LIBRARY_FOR_DISTRIBUTION` & removed the `-allow-internal-distribution` build param.
-- Revert `NetworkModule` to v1.0.0 and build `PaymentModule`. 
-- Then I added `logLevel` again and built `NetworkModule` to the new version `v1.0.1`. 
+- Revert `NetworkModule` to v1.0.0 and build `PaymentModule`.
+- Then I added `logLevel` again and built `NetworkModule` to the new version `v1.0.1`.
 - Finally, import `PaymentModule` (v1.0.0) and `NetworkModule` (v1.0.1) into `ShoppingApp`.
 
 This time, `PaymentModule`, despite of linking against `NetworkModule` v1.0.0, printed out the correct Memory Layout of `Config` struct in v1.0.1 of `NetworkModule`, thanks to `Library Evolution`.
@@ -276,7 +275,7 @@ Debug mode: true
 
 ### In the end
 
-If you are distributing library as a binary package, then you should be aware of `Binary Compatible` and turn on `Library Evolution` & `Module Stability`. 
+If you are distributing library as a binary package, then you should be aware of `Binary Compatible` and turn on `Library Evolution` & `Module Stability`.
 Also, please check out [here](https://github.com/apple/swift-evolution/blob/main/proposals/0260-library-evolution.md) for more optimization with `@frozen` keyword.
 
 ### References
@@ -285,3 +284,5 @@ Also, please check out [here](https://github.com/apple/swift-evolution/blob/main
 - [https://www.swift.org/blog/library-evolution/](https://www.swift.org/blog/library-evolution/)
 - [https://github.com/apple/swift/blob/main/docs/ABIStabilityManifesto.md](https://github.com/apple/swift/blob/main/docs/ABIStabilityManifesto.md)
 - [https://github.com/apple/swift-evolution/blob/main/proposals/0260-library-evolution.md](https://github.com/apple/swift-evolution/blob/main/proposals/0260-library-evolution.md)
+
+🚢🚢🚢🚢🚢
