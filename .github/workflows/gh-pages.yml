@@ -18,7 +18,7 @@ jobs:
         id: cache-publish
         uses: actions/cache@v3
         with:
-          path: .build/release/publish-cli
+          path: ./.build/release/publish-cli
           key: publish-build-${{ hashFiles('Package.resolved') }}
 
       - if: ${{ steps.cache-publish.outputs.cache-hit != 'true' }}
@@ -29,7 +29,7 @@ jobs:
           make
 
       - name: Generate Site
-        run: .build/release/publish-cli generate
+        run: ./.build/release/publish-cli generate
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
