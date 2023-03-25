@@ -18,7 +18,7 @@ jobs:
         id: cache-publish
         uses: actions/cache@v3
         with:
-          path: .build
+          path: .build/release/publish-cli
           key: publish-build-${{ hashFiles('Package.resolved') }}
 
       - if: ${{ steps.cache-publish.outputs.cache-hit != 'true' }}
