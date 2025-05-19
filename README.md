@@ -30,3 +30,28 @@ publish generate
 ```
 
 This will generate the website in the `Output` folder. 
+
+## Running the website locally
+
+To run the website locally, run the following command in your terminal:
+
+```bash
+publish run
+```
+
+This will start a local server, and you can view the website in your browser, typically at `http://localhost:8000`.
+
+## Deploying the website
+
+To deploy the website, follow these steps:
+
+1. Generate the website (if you haven't already):
+   ```bash
+   publish generate
+   ```
+2. Commit and push your changes to the `master` branch:
+   ```bash
+   git add .
+   git commit -m "Update website"
+   git push origin master
+   ``` 

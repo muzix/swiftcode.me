@@ -22,6 +22,10 @@ jobs:
           key: publish-build-${{ hashFiles('Package.resolved') }}
 
       - if: ${{ steps.cache-publish.outputs.cache-hit != 'true' }}
+        name: Install make
+        run: apt-get update && apt-get install -y make
+
+      - if: ${{ steps.cache-publish.outputs.cache-hit != 'true' }}
         name: Build Publish
         run: |
           git clone https://github.com/JohnSundell/Publish.git
