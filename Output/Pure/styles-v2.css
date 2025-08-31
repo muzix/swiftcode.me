@@ -4,17 +4,28 @@
   box-sizing: border-box;
 }
 
+body {
+  background-color: #111;
+  color: #e0e0e0;
+}
+
 .l-box {
   padding: 0.4em;
 }
 
 a {
   text-decoration: none;
-  color: rgba(0, 0, 0, 0.8);
+  color: #87ceeb;
 }
 a:hover,
 a:focus {
   text-decoration: underline;
+  color: #add8e6;
+}
+a.post-category:hover,
+a.post-category:focus {
+  text-decoration: none !important;
+  color: #fff !important;
 }
 
 h1 {
@@ -42,8 +53,8 @@ h3 {
 }
 
 .sidebar {
-  background: #fff;
-  color: rgba(0, 0, 0, 0.8);
+  background: #111;
+  color: #e0e0e0;
 }
 
 .brand-title,
@@ -55,7 +66,7 @@ h3 {
 }
 .brand-tagline {
   font-weight: 300;
-  color: rgba(0, 0, 0, 0.8);
+  color: #b0b0b0;
 }
 
 .nav-list {
@@ -70,8 +81,8 @@ h3 {
 }
 .nav-item a {
   background: transparent;
-  border: 2px solid rgb(176, 202, 219);
-  color: #fff;
+  border: 2px solid #555;
+  color: #e0e0e0;
   margin-top: 1em;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -79,14 +90,14 @@ h3 {
 }
 .nav-item a:hover,
 .nav-item a:focus {
-  border: 2px solid rgb(61, 146, 201);
+  border: 2px solid #87ceeb;
   text-decoration: none;
 }
 
 .content-subhead {
   text-transform: uppercase;
-  color: #aaa;
-  border-bottom: 1px solid #eee;
+  color: #999;
+  border-bottom: 1px solid #444;
   padding: 0.4em 0;
   font-size: 80%;
   font-weight: 500;
@@ -102,8 +113,17 @@ h3 {
 }
 .post-title {
   font-size: 2em;
-  color: #222;
+  color: #fff;
   margin-bottom: 0.2em;
+}
+.post-title a,
+.post-title a:visited {
+  color: #fff;
+}
+.post-title a:hover,
+.post-title a:focus {
+  color: #87ceeb;
+  text-decoration: none;
 }
 .post-avatar {
   border-radius: 50px;
@@ -111,7 +131,7 @@ h3 {
   margin-left: 1em;
 }
 .post-description {
-  color: #444;
+  color: #c0c0c0;
   line-height: 1.8em;
 }
 
@@ -141,24 +161,31 @@ h3 {
   margin: 0 0.1em;
   padding: 0.3em 1em;
   color: #fff;
-  background: #999;
-  font-size: 60%;
+  background: #54549c;
+  font-size: 75%;
   border-radius: 8px;
+}
+.post-category a,
+.post-category a:hover,
+.post-category a:focus,
+.post-category a:visited {
+  text-decoration: none !important;
+  color: #fff !important;
 }
 
 /*    American Palette https://flatuicolors.com/palette/us*/
 
   .post-category-swift {
-      background: #90AFC5;
+      background: #7575d9;
   }
   .post-category-ios {
-      background: #336B87;
+      background: #6565b3;
   }
   .post-category-tutorial {
-      background: #2A3132;
+      background: #5050a0;
   }
   .post-category-other {
-      background: #763526;
+      background: #8e8ee1;
   }
 
 .post-images {
@@ -248,7 +275,7 @@ h3 {
   .top-header {
       position: fixed;
       top: 0em;
-      background: #fff;
+      background: #111;
   }
 }
 
@@ -276,31 +303,31 @@ justify-content: center;
 }
 
 .markdown-body pre code .keyword {
-  color: #e73289;
+  color: #fc5fa3;
 }
 
 .markdown-body pre code .type {
-  color: #8281ca;
+  color: #5dd8ff;
 }
 
 .markdown-body pre code .call {
-  color: #348fe5;
+  color: #67b7a4;
 }
 
 .markdown-body pre code .property {
-  color: #21ab9d;
+  color: #67b7a4;
 }
 
 .markdown-body pre code .number {
-  color: #db6f57;
+  color: #d0bf69;
 }
 
 .markdown-body pre code .string {
-  color: #fa641e;
+  color: #fc6a5d;
 }
 
 .markdown-body pre code .comment {
-  color: #6b8a94;
+  color: #7f8c98;
 }
 
 .markdown-body pre code .dotAccess {

@@ -29,13 +29,7 @@ extension Node where Context == HTML.BodyContext {
                 .div(
                     .contentBody(item.body)
                 )
-            ),
-            .div(
-                .style("display:flex;justify-content:left;"),
-                .selfClosedElement(named: "applause-button", attributes: [
-                    .attribute(named: "style", value: "width: 58px; height: 58px;margin: 30px 0 0 0;")
-                ])
-            )
+            ), 
         )
     }
 }
