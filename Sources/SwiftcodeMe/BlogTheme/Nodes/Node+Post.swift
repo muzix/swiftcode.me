@@ -29,7 +29,7 @@ extension Node where Context == HTML.BodyContext {
                 .div(
                     .contentBody(item.body)
                 )
-            ), 
+            )
         )
     }
 }
