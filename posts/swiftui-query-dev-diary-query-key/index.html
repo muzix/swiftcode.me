@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><title>Building Type-Safe Query Keys in SwiftUIQuery library</title><meta name="twitter:title" content="Building Type-Safe Query Keys in SwiftUIQuery library"/><meta name="og:title" content="Building Type-Safe Query Keys in SwiftUIQuery library"/><meta name="description" content="Just another note while I'm vibe-coding SwiftUIQuery"/><meta name="twitter:description" content="Just another note while I'm vibe-coding SwiftUIQuery"/><meta name="og:description" content="Just another note while I'm vibe-coding SwiftUIQuery"/><meta name="twitter:image" content="https://swiftcode.me/assets/swiftuiquery-logo-min.png"/><meta name="og:image" content="https://swiftcode.me/assets/swiftuiquery-logo-min.png"/><meta name="twitter:card" content="summary"/><meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous"/><link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/grids-responsive-min.css"/><link rel="stylesheet" href="https://unpkg.com/github-markdown-css@5.0.0/github-markdown-dark.css"/><link rel="stylesheet" href="/Pure/styles-v2.css"/><link rel="stylesheet" href="/all.css"/></head><body><div id="layout" class="pure-g"><div><div class="pure-menu pure-menu-horizontal pure-u-1-1 top-header"><a class="pure-menu-heading" href="/">📱 ☕️ 🍜</a><ul class="pure-menu-list"></ul></div></div><div class="sidebar pure-u-1 pure-u-md-1-4"><div class="header"><div id="layout" class="pure-g"><div class="author__avatar"><img src="https://avatars.githubusercontent.com/u/1668092?s=96&v=4"/></div><div class="pure-u-md-1-1 pure-u-3-4"><h1 class="brand-title">Hoang Pham</h1><h3 class="brand-tagline">iOS Developer</h3></div></div><div id="layout" class="pure-g"><div class="pure-u-md-1-1"><a href="https://en.wikipedia.org/wiki/Ho_Chi_Minh_City"><i class="fas fa-map-marker-alt l-box social-icon"></i><a class="social-media" href="https://en.wikipedia.org/wiki/Ho_Chi_Minh_City">Ho Chi Minh</a></a></div><div class="pure-u-md-1-1"><a href="mailto:phamhuuhoang@gmail.com"><i class="fas fa-envelope-open-text l-box social-icon"></i><a class="social-media" href="mailto:phamhuuhoang@gmail.com">Email</a></a></div><div class="pure-u-md-1-1"><a href="https://www.linkedin.com/in/hoang-pham-huu/"><i class="fab fa-linkedin l-box social-icon"></i><a class="social-media" href="https://www.linkedin.com/in/hoang-pham-huu/">LinkedIn</a></a></div><div class="pure-u-md-1-1"><a href="https://github.com/muzix"><i class="fab fa-github-square l-box social-icon"></i><a class="social-media" href="https://github.com/muzix">GitHub</a></a></div><div class="pure-u-md-1-1"><a href="https://twitter.com/_HoangPH_"><i class="fab fa-twitter-square l-box social-icon"></i><a class="social-media" href="https://twitter.com/_HoangPH_">Twitter</a></a></div></div></div></div><div class="content pure-u-1 pure-u-md-3-5 pure-u-xl-6-10"><h2 class="post-title"><a href="/posts/swiftui-query-dev-diary-query-key">Building Type-Safe Query Keys in SwiftUIQuery library</a></h2><p class="post-meta">September 1, 2025</p><div class="post-tags"><a class="post-category post-category-swiftuiquery" href="/tags/swiftuiquery">swiftuiquery</a><a class="post-category post-category-react" href="/tags/react">react</a><a class="post-category post-category-query" href="/tags/query">query</a><a class="post-category post-category-note" href="/tags/note">note</a><a class="post-category post-category-development" href="/tags/development">development</a><a class="post-category post-category-vibe coding" href="/tags/vibe-coding">vibe coding</a></div><div class="markdown-body"><div><br/><p>When working with React Query, one of the best practices is to use arrays for query keys with multiple parameters:</p><pre><code><span class="comment">// React Query best practice</span>
+<span class="call">useQuery</span>({
+  queryKey: ['products', category, { featured: <span class="keyword">true</span>, minRating: <span class="number">4.5</span> }],
+  queryFn: () =&gt; <span class="call">fetchProducts</span>(category, { featured: <span class="keyword">true</span>, minRating: <span class="number">4.5</span> })
+})
+</code></pre><p>This gives you a hierarchical key structure that's easy to reason about and enables powerful features like partial invalidation - you can invalidate all ['products'] queries or just ['products', 'electronics'].</p><h3>My First Attempt: Swift Tuples</h3><p>When I started building SwiftUI Query, I thought Swift's native tuples would be perfect for this:</p><pre><code><span class="keyword">typealias</span> KeyTuple2&lt;K1, K2&gt; = (<span class="type">K1</span>, <span class="type">K2</span>)
+<span class="keyword">typealias</span> KeyTuple3&lt;K1, K2, K3&gt; = (<span class="type">K1</span>, <span class="type">K2</span>, <span class="type">K3</span>)
+
+<span class="comment">// This should work, right?</span>
+<span class="type">UseQuery</span>(
+    queryKey: (<span class="string">"products"</span>, <span class="string">"electronics"</span>),
+    queryFn: { <span class="keyword">_ in</span> ... }
+)
+</code></pre><p>It seemed elegant - leverage Swift's built-in tuple syntax for multi-parameter keys. But I quickly ran into problems:</p><p><strong>Problem 1: Codable Conformance</strong></p><blockquote><p>extension (K1, K2): Codable where K1: Codable, K2: Codable {} // ❌ Error: Cannot extend tuple types</p></blockquote><p>Tuples can't conform to protocols in Swift, which meant I couldn't make them Codable for serialization or hashing.</p><p><strong>Problem 2: No Custom Initializers</strong></p><pre><code><span class="comment">// I wanted this convenience syntax:</span>
+<span class="type">KeyTuple2</span>(<span class="type">Product</span>.<span class="keyword">self</span>, <span class="number">123</span>) <span class="comment">// Product.Type -&gt; "Product"
+
+// But tuples can't have custom initializers</span>
+</code></pre><h3>The Struct Solution</h3><p>After hitting these walls, I realized I needed to create actual struct types:</p><pre><code><span class="keyword">public struct</span> KeyTuple2&lt;K1: <span class="type">QueryKeyCodable</span>, K2: <span class="type">QueryKeyCodable</span>&gt;: <span class="type">QueryKey</span>, <span class="type">QueryKeyCodable</span> {
+    <span class="keyword">public let</span> key1: <span class="type">K1</span>
+    <span class="keyword">public let</span> key2: <span class="type">K2</span>
+
+    <span class="keyword">public init</span>(<span class="keyword">_</span> key1: <span class="type">K1</span>, <span class="keyword">_</span> key2: <span class="type">K2</span>) {
+        <span class="keyword">self</span>.<span class="property">key1</span> = key1
+        <span class="keyword">self</span>.<span class="property">key2</span> = key2
+    }
+
+    <span class="comment">// Convenience for types</span>
+    <span class="keyword">public init</span>(<span class="keyword">_</span> key1: (some <span class="type">Any</span>).<span class="type">Type</span>, <span class="keyword">_</span> key2: <span class="type">K2</span>) <span class="keyword">where</span> <span class="type">K1</span> == <span class="type">String</span> {
+        <span class="keyword">self</span>.<span class="property">key1</span> = <span class="type">String</span>(describing: key1)
+        <span class="keyword">self</span>.<span class="property">key2</span> = key2
+    }
+}
+</code></pre><p>This gave me everything I was missing:</p><p>✅ Protocol Conformance</p><pre><code><span class="comment">// Now I can make it Codable and Equatable</span>
+<span class="keyword">extension</span> <span class="type">KeyTuple2</span>: <span class="type">Codable</span> <span class="keyword">where</span> <span class="type">K1</span>: <span class="type">Codable</span>, <span class="type">K2</span>: <span class="type">Codable</span> {}
+</code></pre><p>✅ Meaningful Property Names</p><pre><code><span class="keyword">let</span> key = <span class="type">KeyTuple3</span>(<span class="string">"products"</span>, <span class="type">Category</span>.<span class="property">electronics</span>, <span class="keyword">true</span>)
+<span class="comment">// key.key1, key.key2, key.key3 - much clearer than .0, .1, .2</span>
+</code></pre><p>✅ Custom Initializers</p><pre><code><span class="keyword">let</span> key = <span class="type">KeyTuple2</span>(<span class="type">Product</span>.<span class="keyword">self</span>, <span class="number">123</span>)
+<span class="comment">// Automatically converts Product.Type to "Product" string</span>
+</code></pre><p>✅ Consistent Hashing</p><pre><code><span class="keyword">public var</span> queryHash: <span class="type">String</span> {
+    <span class="keyword">let</span> jsonEncoder = <span class="type">JSONEncoder</span>()
+    jsonEncoder.<span class="property">outputFormatting</span> = .<span class="dotAccess">sortedKeys</span>
+    <span class="keyword">guard let</span> jsonData = <span class="keyword">try</span>? jsonEncoder.<span class="call">encode</span>(<span class="keyword">self</span>) <span class="keyword">else</span> {
+        <span class="keyword">return</span> <span class="string">"</span>\(hashValue)<span class="string">"</span>
+    }
+    <span class="keyword">return</span> <span class="type">String</span>(decoding: jsonData, as: <span class="type">UTF8</span>.<span class="keyword">self</span>)
+}
+</code></pre><h3>The Final API</h3><p>Now I can create type-safe query keys that feel natural:</p><pre><code><span class="type">UseQuery</span>(
+    queryKey: .<span class="keyword">init</span>(<span class="type">FetchProductsQuery</span>.<span class="keyword">self</span>, category, searchTerm),
+    queryFn: { <span class="keyword">_ in</span>
+        <span class="call">fetchProducts</span>(category, searchTerm)
+    }
+) { result <span class="keyword">in
+    if</span> result.<span class="property">isLoading</span> {
+        <span class="type">ProgressView</span>()
+    } <span class="keyword">else</span> {
+        <span class="type">ProductList</span>(products: result.<span class="property">data</span>)
+    }
+}
+</code></pre><p>I ended up building KeyTuple2 through KeyTuple6, covering pretty much every realistic use case. The struct approach gave me all the benefits of React Query's array-based keys while leveraging Swift's type system for compile-time safety.</p><p>Sometimes the "obvious" solution (tuples) isn't the right one. The extra verbosity of structs was worth it for the flexibility and safety they provided. Plus, the API still feels lightweight enough that you don't mind using it everywhere.</p><p>More code at <a href="https://github.com/muzix/SwiftUIQuery/">https://github.com/muzix/SwiftUIQuery/</a></p></div></div></div><div class="footer pure-u-1"><div class="pure-u-1">© 2025 Hoang Pham</div><div class="pure-u-1">Generated using <a href="https://github.com/johnsundell/publish">Publish</a>. Written in Swift</div><div class="pure-u-1">Using theme from <a href="https://github.com/nitesuit/Blog">nitesuit</a></div><div class="pure-u-1"><a href="/feed.rss">RSS feed</a></div></div></div></body></html>
